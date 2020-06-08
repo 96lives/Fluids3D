@@ -1,9 +1,9 @@
-#version 120
+#version 330 core
 
-attribute vec3 position;
-attribute vec3 normal;
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec3 normal;
 
-varying vec3 normal0;
+out vec3 normal0;
 
 uniform mat4 camera;
 uniform mat4 model; 

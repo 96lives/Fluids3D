@@ -1,4 +1,4 @@
-#version 150
+#version 330 core
 
 uniform vec4 color;
 uniform mat4 model;

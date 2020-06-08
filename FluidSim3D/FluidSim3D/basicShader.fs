@@ -1,6 +1,6 @@
-#version 120
+#version 330 core
 
-varying vec3 normal0;
+in vec3 normal0;
 
 uniform vec4 color;
 
