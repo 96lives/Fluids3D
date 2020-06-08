@@ -100,7 +100,7 @@ private:
 //----------------------------------------------------------------------
 class Mesh {
 public:
-	Mesh::Mesh(std::vector<glm::vec3> vertices, std::vector<glm::vec3> normals, std::vector<int> indices);
+	Mesh(std::vector<glm::vec3> vertices, std::vector<glm::vec3> normals, std::vector<int> indices);
 
 	void draw();
 	void drawOutline();

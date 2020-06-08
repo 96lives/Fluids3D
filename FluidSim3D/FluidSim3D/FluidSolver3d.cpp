@@ -1,4 +1,5 @@
 #include "FluidSolver3d.h"
+#include <math.h>
 
 using namespace SimUtil;
 

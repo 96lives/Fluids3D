@@ -18,7 +18,7 @@ public:
 	y - gridheight
 	z - griddepth	
 	*/
-	FluidRenderer3D::FluidRenderer3D(SimUtil::Mat3Di *labels, int gridWidth, int gridHeight, int gridDepth, int borderCount);
+	FluidRenderer3D(SimUtil::Mat3Di *labels, int gridWidth, int gridHeight, int gridDepth, int borderCount);
 	~FluidRenderer3D();
 	/*
 	Draws the fluid according to choosen visualization mode

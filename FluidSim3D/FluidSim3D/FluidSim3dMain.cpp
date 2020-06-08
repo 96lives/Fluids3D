@@ -41,7 +41,8 @@ int main(int argc, char** argv) {
 	auto start = std::chrono::system_clock::now();
 	bool newFrame = true;
 	while (!render.isClosed()) {
-		render.draw(solver.particleData(), data.vertices, data.normals, data.indices);
+		auto particleData = solver.particleData();
+		render.draw(particleData, data.vertices, data.normals, data.indices);
 		if (!render.isPaused() && newFrame) {
 			start = std::chrono::system_clock::now();
 			if (render.gManipulationActive()) {
