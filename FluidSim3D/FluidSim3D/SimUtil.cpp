@@ -355,7 +355,11 @@ namespace SimUtil {
 	}
 
 	int* getGridCellIndex(Vec3 pos, float dx) {
-		int index[3] = { (int)(pos.x / dx), (int)(pos.y / dx), (int)(pos.z / dx) };
+		int* index = new int[3];
+		index[0] = (int) (pos.x / dx);
+		index[1] = (int) (pos.y / dx);
+		index[2] = (int) (pos.z / dx);
+		// int index[3] = { (int)(pos.x / dx), (int)(pos.y / dx), (int)(pos.z / dx) };
 		return index;
 	}
 
