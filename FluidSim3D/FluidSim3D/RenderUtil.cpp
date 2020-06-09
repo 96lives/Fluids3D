@@ -415,13 +415,13 @@ void Point::draw() {
 
 }
 
+/*
 //----------------------------------------------------------------------
 // Shader Class
 //----------------------------------------------------------------------
 void checkShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage);
 std::string loadShader(const std::string& fileName);
 GLuint createShader(const std::string& text, GLenum shaderType);
-
 Shader::Shader(const std::string& fileName) {
 	m_program = glCreateProgram();
 	m_shaders[0] = createShader(loadShader(fileName + ".vs"), GL_VERTEX_SHADER);
@@ -556,3 +556,4 @@ void checkShaderError(GLuint shader, GLuint flag, bool isProgram, const std::str
 		std::cerr << errorMessage << ": '" << error << "'" << std::endl;
 	}
 }
+*/

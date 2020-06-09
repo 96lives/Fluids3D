@@ -11,9 +11,11 @@
 FluidRenderer3D::FluidRenderer3D(SimUtil::Mat3Di *labels, int gridWidth, int gridHeight, int gridDepth, int borderCount) {
 	m_transform = new Transform();
 	m_display = new Display{ WIDTH, HEIGHT, "3D Fluid Simulation", m_transform };
-	m_camera = new Camera(glm::vec3(0, 0, -4), 70.0f, (float)WIDTH / (float)HEIGHT, 0.01f, 1000.0f);	
-	m_colorShader = new Shader{ "./basicShader" };
-	m_normalShader = new Shader{ "./normalShader" };
+	m_camera = new Camera(glm::vec3(0, 0, -4), 70.0f, (float)WIDTH / (float)HEIGHT, 0.01f, 1000.0f);
+	m_colorShader = new Shader{"./basicShader.vs", "./basicShader.fs"};
+	m_colorShader = new Shader{"./normalShader.vs", "./normalShader.fs"};
+	// m_colorShader = new Shader{ "./basicShader" };
+	// m_normalShader = new Shader{ "./normalShader" };
 	initGeom(labels, gridWidth, gridHeight, gridDepth, borderCount);
 
 	m_gLight.position = glm::vec3(2.0, 2.0, 2.0);
@@ -39,7 +41,7 @@ void FluidRenderer3D::draw(std::vector<glm::vec3> &particles, std::vector<glm::v
 	//m_display->clear(0.686f, 0.933f, 0.933f, 1.0f);
 	m_display->clear(1.0f, 1.0f, 1.0f, 1.0f);
 
-	m_colorShader->bind();
+	m_colorShader->use();
 	m_colorShader->update(m_transform, m_camera);
 	m_colorShader->setColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -65,7 +67,7 @@ void FluidRenderer3D::draw(std::vector<glm::vec3> &particles, std::vector<glm::v
 		glEnable(GL_DEPTH_TEST);
 	}
 	else if (m_visualMode == 4) {
-		m_normalShader->bind();
+		m_normalShader->use();
 		m_normalShader->update(m_transform, m_camera);
 		//m_normalShader->setColor(0.118f, 0.565f, 1.0f, 1.0f);
 		m_normalShader->setColor(0.255f, 0.412f, 0.882f, 1.0f);

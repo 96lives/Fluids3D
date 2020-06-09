@@ -6,6 +6,7 @@
 
 #include "RenderUtil.h"
 #include "SimUtil.h"
+#include "shader.h"
 
 class FluidRenderer3D
 {
