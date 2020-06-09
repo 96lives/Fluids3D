@@ -8,7 +8,6 @@ using namespace SimUtil;
 //----------------------------------------------------------------------
 
 FluidSolver3D::FluidSolver3D(std::string initialGeometryFile, float dx, float dt) {
-
 	m_dx = dx;
 	m_dt = dt;
 

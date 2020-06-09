@@ -165,13 +165,21 @@ public:
 		glm::mat4 cameraU = camera->getViewProjection();
 		glm::mat4 modelU = transform->GetModel();
 		glm::vec3 cameraPosU = camera->getPos();
+		setMat4("camera", cameraU);
+		setMat4("model", modelU);
+		setVec3("cameraPosition", cameraPosU);
 
-		glUniformMatrix4fv(m_uniforms[CAMERA_U], 1, GL_FALSE, &cameraU[0][0]);
-		glUniformMatrix4fv(m_uniforms[MODEL_U], 1, GL_FALSE, &modelU[0][0]);
-		glUniform3f(m_uniforms[CAMERA_POS_U], cameraPosU.x, cameraPosU.y, cameraPosU.z);
+		// glUniformMatrix4fv(m_uniforms[CAMERA_U], 1, GL_FALSE, &cameraU[0][0]);
+		// glUniformMatrix4fv(m_uniforms[MODEL_U], 1, GL_FALSE, &modelU[0][0]);
+		// glUniform3f(m_uniforms[CAMERA_POS_U], cameraPosU.x, cameraPosU.y, cameraPosU.z);
 	}
 
 	void setLight(const Light& light) {
+    	setVec3("light.position", light.position);
+		setVec3("light.intensities", light.intensities);
+		setFloat("light.attenuation", light.attenuation);
+		setFloat("light.ambientCoefficient", light.ambientCoefficient);
+		/*
 		GLint loc = glGetUniformLocation(m_program, "light.position");
 		GLfloat pos[3] = { light.position.x, light.position.y, light.position.z };
 		glProgramUniform3fv(m_program, loc, 1, pos);
@@ -184,15 +192,19 @@ public:
 		loc = glGetUniformLocation(m_program, "light.ambientCoefficient");
 		GLfloat amb[1] = { light.ambientCoefficient };
 		glProgramUniform1fv(m_program, loc, 1, amb);
+		 */
 	}
 
 	void setMaterialSettings(float shininess, glm::vec3 specularColor) {
-		glUniform3f(m_uniforms[SPECULARCOLOR], specularColor.x, specularColor.y, specularColor.z);
-		glUniform1f(m_uniforms[SHININESS], shininess);
+    	setVec3("materialSpecularColor", specularColor);
+		setFloat("materialShininess", shininess);
+		// glUniform3f(m_uniforms[SPECULARCOLOR], specularColor.x, specularColor.y, specularColor.z);
+		// glUniform1f(m_uniforms[SHININESS], shininess);
 	}
 
 	void setColor(float r, float g, float b, float a) {
-		glUniform4f(m_uniforms[COLOR], r, g, b, a);
+    	setVec4("color", glm::vec4(r, g, b, a));
+		// glUniform4f(m_uniforms[COLOR], r, g, b, a);
 	}
 
 
@@ -204,7 +216,6 @@ private:
 		COLOR,
 		SHININESS,
 		SPECULARCOLOR,
-
 		NUM_UNIFORMS
 	};
 
