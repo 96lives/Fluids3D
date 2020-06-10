@@ -2,6 +2,7 @@
 #define SHADER_H
 
 #include <glm/glm.hpp>
+#include <glm/ext.hpp>
 
 #include <string>
 #include <fstream>
@@ -168,10 +169,6 @@ public:
 		setMat4("camera", cameraU);
 		setMat4("model", modelU);
 		setVec3("cameraPosition", cameraPosU);
-
-		// glUniformMatrix4fv(m_uniforms[CAMERA_U], 1, GL_FALSE, &cameraU[0][0]);
-		// glUniformMatrix4fv(m_uniforms[MODEL_U], 1, GL_FALSE, &modelU[0][0]);
-		// glUniform3f(m_uniforms[CAMERA_POS_U], cameraPosU.x, cameraPosU.y, cameraPosU.z);
 	}
 
 	void setLight(const Light& light) {
@@ -179,48 +176,20 @@ public:
 		setVec3("light.intensities", light.intensities);
 		setFloat("light.attenuation", light.attenuation);
 		setFloat("light.ambientCoefficient", light.ambientCoefficient);
-		/*
-		GLint loc = glGetUniformLocation(m_program, "light.position");
-		GLfloat pos[3] = { light.position.x, light.position.y, light.position.z };
-		glProgramUniform3fv(m_program, loc, 1, pos);
-		loc = glGetUniformLocation(m_program, "light.intensities");
-		GLfloat intensities[3] = { light.intensities.x, light.intensities.y, light.intensities.z };
-		glProgramUniform3fv(m_program, loc, 1, pos);
-		loc = glGetUniformLocation(m_program, "light.attenuation");
-		GLfloat att[1] = { light.attenuation };
-		glProgramUniform1fv(m_program, loc, 1, att);
-		loc = glGetUniformLocation(m_program, "light.ambientCoefficient");
-		GLfloat amb[1] = { light.ambientCoefficient };
-		glProgramUniform1fv(m_program, loc, 1, amb);
-		 */
 	}
 
 	void setMaterialSettings(float shininess, glm::vec3 specularColor) {
     	setVec3("materialSpecularColor", specularColor);
 		setFloat("materialShininess", shininess);
-		// glUniform3f(m_uniforms[SPECULARCOLOR], specularColor.x, specularColor.y, specularColor.z);
-		// glUniform1f(m_uniforms[SHININESS], shininess);
 	}
 
 	void setColor(float r, float g, float b, float a) {
-    	setVec4("color", glm::vec4(r, g, b, a));
-		// glUniform4f(m_uniforms[COLOR], r, g, b, a);
+    	auto color = glm::vec4(r, g, b, a);
+    	setVec4("color", color);
 	}
 
 
 private:
-	enum {
-		MODEL_U,
-		CAMERA_U,
-		CAMERA_POS_U,
-		COLOR,
-		SHININESS,
-		SPECULARCOLOR,
-		NUM_UNIFORMS
-	};
-
-	GLuint m_program;
-	GLuint m_uniforms[NUM_UNIFORMS];
     // utility function for checking shader compilation/linking errors.
     // ------------------------------------------------------------------------
     void checkCompileErrors(GLuint shader, std::string type)
