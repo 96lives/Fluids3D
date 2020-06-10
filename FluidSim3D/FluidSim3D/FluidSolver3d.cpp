@@ -182,6 +182,7 @@ are fluid, solids remain the same, and all other are air.
 */
 void FluidSolver3D::labelGrid() {
 	// first clear grid labels (mark everything air, but leave solids)
+    #pragma omp parallel for
 	for (int i = 0; i < m_gridWidth; i++) {
 		for (int j = 0; j < m_gridHeight; j++) {
 			for (int k = 0; k < m_gridDepth; k++) {
@@ -193,6 +194,7 @@ void FluidSolver3D::labelGrid() {
 	}
 
 	// mark any cell containing a particle FLUID
+    #pragma omp parallel for
 	for (int i = 0; i < m_particles->size(); i++) {
 		// get cell containing the particle
 		int *cell = getGridCellIndex(m_particles->at(i).pos, m_dx);
@@ -231,6 +233,7 @@ void FluidSolver3D::particlesToGrid() {
 	wDen.initValues(0.0);
 
 	// loop over particles and accumulate num and den at each grid point
+    #pragma omp parallel for
 	for (int p = 0; p < m_particles->size(); p++) {
 		Particle3D curParticle = m_particles->at(p);
 		int* ind = getGridCellIndex(curParticle.pos, m_dx);
@@ -261,6 +264,7 @@ void FluidSolver3D::particlesToGrid() {
 	}
 
 	// additional pass over grid to divide and update actual velocities
+    #pragma omp parallel for
 	for (int i = 0; i < m_gridWidth + 1; i++) {
 		for (int j = 0; j < m_gridHeight + 1; j++) {
 			for (int k = 0; k < m_gridDepth + 1; k++) {
@@ -306,6 +310,7 @@ void FluidSolver3D::extrapolateGridFluidData(Mat3Df &grid, int x, int y, int z, 
 	// initialize marker array 
 	Mat3Di d{ x, y, z };
 	// set d to 0 for known values, max int for unknown
+    #pragma omp parallel for
 	for (int i = 0; i < x; i++) {
 		for (int j = 0; j < y; j++) {
 			for (int k = 0; k < z; k++) {
@@ -422,6 +427,7 @@ Saves a copy of the current velocity grids to be used on the FLIP updated
 */
 void FluidSolver3D::saveVelocityGrids() {
 	// save u grid
+    #pragma omp parallel for
 	for (int i = 0; i < m_gridWidth + 1; i++) {
 		for (int j = 0; j < m_gridHeight; j++) {
 			for (int k = 0; k < m_gridDepth; k++) {
@@ -431,6 +437,7 @@ void FluidSolver3D::saveVelocityGrids() {
 	}
 
 	// save v grid
+    #pragma omp parallel for
 	for (int i = 0; i < m_gridWidth; i++) {
 		for (int j = 0; j < m_gridHeight + 1; j++) {
 			for (int k = 0; k < m_gridDepth; k++) {
@@ -440,6 +447,7 @@ void FluidSolver3D::saveVelocityGrids() {
 	}
 
 	// save w grid
+    #pragma omp parallel for
 	for (int i = 0; i < m_gridWidth; i++) {
 		for (int j = 0; j < m_gridHeight; j++) {
 			for (int k = 0; k < m_gridDepth + 1; k++) {
@@ -455,6 +463,7 @@ Applies the force of gravity to velocity field on the grid
 void FluidSolver3D::applyBodyForces() {
 	// traverse all grid cells and apply force to each velocity component
 	// The new velocity is calculated using forward euler
+    #pragma omp parallel for
 	for (int i = 0; i < m_gridWidth + 1; i++) {
 		for (int j = 0; j < m_gridHeight + 1; j++) {
 			for (int k = 0; k < m_gridDepth + 1; k++) {
@@ -488,6 +497,7 @@ Applies the pressure force to the current velocity field.
 */
 void FluidSolver3D::applyPressure() {
 	float scale = m_dt / (FLUID_DENSITY * m_dx);
+    #pragma omp parallel for
 	for (int i = 0; i < m_gridWidth; i++) {
 		for (int j = 0; j < m_gridHeight; j++) {
 			for (int k = 0; k < m_gridDepth; k++) {
@@ -561,6 +571,7 @@ void FluidSolver3D::gridToParticles(float alpha) {
 	Mat3Df dvGrid{ m_gridWidth, m_gridHeight + 1, m_gridDepth };
 	Mat3Df dwGrid{ m_gridWidth, m_gridHeight, m_gridDepth + 1 };
 	// calc u grid
+    #pragma omp parallel for
 	for (int i = 0; i < m_gridWidth + 1; i++) {
 		for (int j = 0; j < m_gridHeight; j++) {
 			for (int k = 0; k < m_gridDepth; k++) {
@@ -569,6 +580,7 @@ void FluidSolver3D::gridToParticles(float alpha) {
 		}
 	}
 	// calc v grid
+    #pragma omp parallel for
 	for (int i = 0; i < m_gridWidth; i++) {
 		for (int j = 0; j < m_gridHeight + 1; j++) {
 			for (int k = 0; k < m_gridDepth; k++) {
@@ -577,6 +589,7 @@ void FluidSolver3D::gridToParticles(float alpha) {
 		}
 	}
 	// calc w grid
+    #pragma omp parallel for
 	for (int i = 0; i < m_gridWidth; i++) {
 		for (int j = 0; j < m_gridHeight; j++) {
 			for (int k = 0; k < m_gridDepth + 1; k++) {
@@ -588,6 +601,7 @@ void FluidSolver3D::gridToParticles(float alpha) {
 	// go through particles and interpolate each velocity component
 	// the update is a PIC/FLIP mix weighted with alpha
 	// alpha = 1.0 is entirely PIC, alpha = 0.0 is all FLIP
+    #pragma omp parallel for
 	for (int i = 0; i < m_particles->size(); i++) {
 		Particle3D *curParticle = &(m_particles->at(i));
 		Vec3 picInterp = interpVel(m_u, m_v, m_w, curParticle->pos);
@@ -609,6 +623,7 @@ Args:
 C - the maximum number of grid cells a particle should move when advected. This helps define substep sizes. 
 */
 void FluidSolver3D::advectParticles(int C) {
+    #pragma omp parallel for
 	for (int i = 0; i < m_particles->size(); i++) {
 		Particle3D *curParticle = &(m_particles->at(i));
 		float subTime = 0;
