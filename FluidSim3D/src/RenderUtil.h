@@ -148,6 +148,7 @@ public:
 	Point(std::vector<glm::vec3> points);
 
 	void draw();
+	void drawSphere();
 
 	~Point();
 private:
@@ -188,39 +189,3 @@ private:
 	glm::vec3 m_forward;
 	glm::vec3 m_up;
 };
-
-/*
-//----------------------------------------------------------------------
-// Shader Class
-//----------------------------------------------------------------------
-class Shader {
-public:
-	Shader(const std::string& fileName);
-
-	void bind();
-	void update(const Transform* transform, const Camera* camera);
-	void setLight(const Light& light);
-	void setMaterialSettings(float shininess, glm::vec3 specularColor);
-	void setColor(float r, float g, float b, float a);
-	
-	~Shader();
-private:
-	static const unsigned int NUM_SHADERS = 2;
-
-	enum {
-		MODEL_U,
-		CAMERA_U,
-		CAMERA_POS_U,
-		COLOR,
-		SHININESS,
-		SPECULARCOLOR,
-
-		NUM_UNIFORMS
-	};
-
-	GLuint m_program;
-	GLuint m_shaders[NUM_SHADERS];
-	GLuint m_uniforms[NUM_UNIFORMS];	
-};
-
-*/

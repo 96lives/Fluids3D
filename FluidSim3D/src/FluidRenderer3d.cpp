@@ -12,8 +12,9 @@ FluidRenderer3D::FluidRenderer3D(SimUtil::Mat3Di *labels, int gridWidth, int gri
 	m_transform = new Transform();
 	m_display = new Display{ WIDTH, HEIGHT, "3D Fluid Simulation", m_transform };
 	m_camera = new Camera(glm::vec3(0, 0, -4), 70.0f, (float)WIDTH / (float)HEIGHT, 0.01f, 1000.0f);
-	m_colorShader = new Shader{"./basicShader.vs", "./basicShader.fs"};
-	m_normalShader = new Shader{"./normalShader.vs", "./normalShader.fs"};
+	m_colorShader = new Shader{"./shaders/basicShader.vs", "./shaders/basicShader.fs"};
+	m_normalShader = new Shader{"./shaders/normalShader.vs", "./shaders/normalShader.fs"};
+	m_pointShader = new Shader{"./shaders/pointShader.vs", "./shaders/pointShader.fs"};
 	initGeom(labels, gridWidth, gridHeight, gridDepth, borderCount);
 
 	m_gLight.position = glm::vec3(2.0, 2.0, 2.0);
@@ -73,6 +74,12 @@ void FluidRenderer3D::draw(std::vector<glm::vec3> &particles, std::vector<glm::v
 		m_normalShader->setLight(m_gLight);
 
 		mesh.draw();
+	}
+	if (m_visualMode == 5) {
+		m_pointShader->use();
+		m_pointShader->update(m_transform, m_camera);
+		m_pointShader->setColor(0.5f, 0.0f, 0.1f, 1.0f);
+		point.drawSphere();
 	}
 	
 

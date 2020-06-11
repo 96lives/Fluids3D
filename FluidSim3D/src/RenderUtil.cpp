@@ -102,6 +102,9 @@ void Display::update(glm::vec3 &orientation, bool &pausePressed, bool &forwardPr
 			case SDLK_4:
 				visualMode = 4;
 				break;
+			case SDLK_5:
+				visualMode = 5;
+				break;
 			case SDLK_w:
 				//move screen up
 				m_transform->SetPos(m_transform->GetPos() + glm::vec3(0, steps, 0));
@@ -406,154 +409,22 @@ void Point::draw() {
 
 	glEnable(GL_PROGRAM_POINT_SIZE);
 	//DISABLE MEE
-	//glPointSize(2.0f);
+	// glPointSize(2.0f);
 	glEnable(GL_POINT_SPRITE);
 	glEnable(GL_POINT_SMOOTH);
 	glDrawArrays(GL_POINTS, 0, m_pointsCount);
-
 	glBindVertexArray(0);
-
 }
 
-/*
-//----------------------------------------------------------------------
-// Shader Class
-//----------------------------------------------------------------------
-void checkShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage);
-std::string loadShader(const std::string& fileName);
-GLuint createShader(const std::string& text, GLenum shaderType);
-Shader::Shader(const std::string& fileName) {
-	m_program = glCreateProgram();
-	m_shaders[0] = createShader(loadShader(fileName + ".vs"), GL_VERTEX_SHADER);
-	m_shaders[1] = createShader(loadShader(fileName + ".fs"), GL_FRAGMENT_SHADER);
+void Point::drawSphere() {
+	glBindVertexArray(m_vertexArrayObject);
 
-	for (int i = 0; i < NUM_SHADERS; i++) {
-		glAttachShader(m_program, m_shaders[i]);
-	}
-
-	glBindAttribLocation(m_program, 0, "position");
-	glBindAttribLocation(m_program, 1, "texCoord");
-	glBindAttribLocation(m_program, 2, "normal");
-
-	glLinkProgram(m_program);
-	glValidateProgram(m_program);
-
-	m_uniforms[MODEL_U] = glGetUniformLocation(m_program, "model");
-	m_uniforms[CAMERA_U] = glGetUniformLocation(m_program, "camera");
-	m_uniforms[CAMERA_POS_U] = glGetUniformLocation(m_program, "cameraPosition");
-	m_uniforms[COLOR] = glGetUniformLocation(m_program, "color");
-	m_uniforms[SHININESS] = glGetUniformLocation(m_program, "materialShininess");
-	m_uniforms[SPECULARCOLOR] = glGetUniformLocation(m_program, "materialSpecularColor");
+	glEnable(GL_PROGRAM_POINT_SIZE);
+	//DISABLE MEE
+	glPointSize(5.0f);
+	glEnable(GL_POINT_SPRITE);
+	glEnable(GL_POINT_SMOOTH);
+	glDrawArrays(GL_POINTS, 0, m_pointsCount);
+	glBindVertexArray(0);
 }
 
-Shader::~Shader() {
-	for (int i = 0; i < NUM_SHADERS; i++) {
-		glDetachShader(m_program, m_shaders[i]);
-		glDeleteShader(m_shaders[i]);
-	}
-	glDeleteProgram(m_program);
-}
-
-void Shader::bind() {
-	glUseProgram(m_program);
-}
-
-void Shader::update(const Transform* transform, const Camera* camera) {
-	glm::mat4 cameraU = camera->getViewProjection();
-	glm::mat4 modelU = transform->GetModel();
-	glm::vec3 cameraPosU = camera->getPos();
-
-	glUniformMatrix4fv(m_uniforms[CAMERA_U], 1, GL_FALSE, &cameraU[0][0]);
-	glUniformMatrix4fv(m_uniforms[MODEL_U], 1, GL_FALSE, &modelU[0][0]);
-	glUniform3f(m_uniforms[CAMERA_POS_U], cameraPosU.x, cameraPosU.y, cameraPosU.z);
-}
-
-void Shader::setLight(const Light& light) {
-	GLint loc = glGetUniformLocation(m_program, "light.position");
-	GLfloat pos[3] = { light.position.x, light.position.y, light.position.z };
-	glProgramUniform3fv(m_program, loc, 1, pos);
-	loc = glGetUniformLocation(m_program, "light.intensities");
-	GLfloat intensities[3] = { light.intensities.x, light.intensities.y, light.intensities.z };
-	glProgramUniform3fv(m_program, loc, 1, pos);
-	loc = glGetUniformLocation(m_program, "light.attenuation");
-	GLfloat att[1] = { light.attenuation };
-	glProgramUniform1fv(m_program, loc, 1, att);
-	loc = glGetUniformLocation(m_program, "light.ambientCoefficient");
-	GLfloat amb[1] = { light.ambientCoefficient };
-	glProgramUniform1fv(m_program, loc, 1, amb);
-}
-
-void Shader::setMaterialSettings(float shininess, glm::vec3 specularColor) {
-	glUniform3f(m_uniforms[SPECULARCOLOR], specularColor.x, specularColor.y, specularColor.z);
-	glUniform1f(m_uniforms[SHININESS], shininess);
-}
-
-void Shader::setColor(float r, float g, float b, float a) {
-	glUniform4f(m_uniforms[COLOR], r, g, b, a);
-}
-
-std::string loadShader(const std::string& fileName)
-{
-	std::ifstream file;
-	file.open((fileName).c_str());
-
-	std::string output;
-	std::string line;
-
-	if (file.is_open())
-	{
-		while (file.good())
-		{
-			getline(file, line);
-			output.append(line + "\n");
-		}
-	}
-	else
-	{
-		std::cerr << "Unable to load shader: " << fileName << std::endl;
-	}
-
-	return output;
-}
-
-GLuint createShader(const std::string& text, GLenum shaderType) {
-	GLuint shader = glCreateShader(shaderType);
-
-	if (shader == 0) {
-		std::cerr << "Error: Shader creation failed" << std::endl;
-	}
-
-	const GLchar* shaderSourceStrings[1];
-	GLint shaderSourceStringLengths[1];
-	shaderSourceStrings[0] = text.c_str();
-	shaderSourceStringLengths[0] = text.length();
-
-	glShaderSource(shader, 1, shaderSourceStrings, shaderSourceStringLengths);
-	glCompileShader(shader);
-
-	checkShaderError(shader, GL_COMPILE_STATUS, true, "Error: Program is compilation failed: ");
-
-	return shader;
-}
-
-void checkShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage)
-{
-	GLint success = 0;
-	GLchar error[1024] = { 0 };
-
-	if (isProgram)
-		glGetProgramiv(shader, flag, &success);
-	else
-		glGetShaderiv(shader, flag, &success);
-
-	if (success == GL_FALSE)
-	{
-		if (isProgram)
-			glGetProgramInfoLog(shader, sizeof(error), NULL, error);
-		else
-			glGetShaderInfoLog(shader, sizeof(error), NULL, error);
-
-		std::cerr << errorMessage << ": '" << error << "'" << std::endl;
-	}
-}
-*/

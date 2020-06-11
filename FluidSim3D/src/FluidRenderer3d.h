@@ -56,6 +56,8 @@ private:
 	Shader *m_colorShader;
 	//shader with normal dependend shading
 	Shader *m_normalShader;
+	//shader used for rendering points
+	Shader *m_pointShader;
 	//Mesh with the geometry of the solids
 	Mesh *m_meshSolid;
 	//Line for the edges of the solids
