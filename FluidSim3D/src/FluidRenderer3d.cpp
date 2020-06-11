@@ -78,7 +78,8 @@ void FluidRenderer3D::draw(std::vector<glm::vec3> &particles, std::vector<glm::v
 	if (m_visualMode == 5) {
 		m_pointShader->use();
 		m_pointShader->update(m_transform, m_camera);
-		m_pointShader->setColor(0.5f, 0.0f, 0.1f, 1.0f);
+		m_pointShader->setColor(0.255f, 0.412f, 0.882f, 1.0f);
+		m_pointShader->setPointRenderSettings(5);
 		point.drawSphere();
 	}
 	

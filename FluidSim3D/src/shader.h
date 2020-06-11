@@ -183,6 +183,10 @@ public:
 		setFloat("materialShininess", shininess);
 	}
 
+	void setPointRenderSettings(float pointSize) {
+    	setFloat("pointSize", pointSize);
+    }
+
 	void setColor(float r, float g, float b, float a) {
     	auto color = glm::vec4(r, g, b, a);
     	setVec4("color", color);

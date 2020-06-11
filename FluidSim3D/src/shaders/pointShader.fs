@@ -1,11 +1,19 @@
 #version 330 core
-
-in vec3 normal0;
+out vec4 FragColor;
 
 uniform vec4 color;
+uniform mat4 camera;
+uniform mat4 model;
 
 void main() {
-	//gl_FragColor = vec4(0.5, 0.0, 0.1, 1.0);
-	gl_FragColor = color;
-	//gl_FragColor = color * clamp(dot(-vec3(0,0,1), normal0), 0.0, 1.0);
+	vec3 N;
+	N.xy = gl_PointCoord * 2.0 - vec2(1.0);
+	float magnitude = dot(N.xy, N.xy);
+
+	if (magnitude > 1.0f)
+        discard;
+	else {
+        N.z = -sqrt(1.0 - magnitude);
+        FragColor = color ;
+	}
 }
