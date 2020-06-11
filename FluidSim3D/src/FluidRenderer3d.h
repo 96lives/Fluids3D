@@ -75,6 +75,7 @@ private:
 	1 - Draw Fluid as Particles
 	2 - Draw Fluid as Triangle Mesh
 	*/
+	float m_renderMode;
 	int m_visualMode;
 	//stores the current orientation
 	glm::vec3 m_orientation;

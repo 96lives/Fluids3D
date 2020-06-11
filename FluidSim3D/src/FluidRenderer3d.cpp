@@ -82,7 +82,7 @@ void FluidRenderer3D::draw(std::vector<glm::vec3> &particles, std::vector<glm::v
 		glm::vec3 colorCode = glm::vec3(0.0f, 191.0f, 255.0f) / 255.0f;
 		m_pointShader->setColor(glm::vec4(colorCode, 1.0f));
 		m_normalShader->setLight(m_gLight);
-		m_pointShader->setPointRenderSettings(20);
+		m_pointShader->setPointRenderSettings(20, m_renderMode);
 		point.drawSphere();
 	}
 	

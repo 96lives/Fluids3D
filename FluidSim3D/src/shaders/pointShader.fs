@@ -7,6 +7,7 @@ uniform vec4 color;
 uniform mat4 camera;
 uniform mat4 model;
 uniform float pointSize;
+uniform float mode;
 
 uniform struct Light {
 	vec3 position;
@@ -26,11 +27,13 @@ float LinearizeDepth(float depth) {
 
 
 void main() {
+    float epsilon = 0.0;
 	vec3 normal;
 	normal.xy = gl_PointCoord * 2.0 - vec2(1.0);
+	// normal.xy = vec2(0.0f, 0.0f);
 	float magnitude = dot(normal.xy, normal.xy);
 
-	if (magnitude > 1.0f)
+	if (magnitude > 1.0f + epsilon)
         discard;
 	else {
         normal.z = sqrt(1.0 - magnitude);
@@ -39,10 +42,12 @@ void main() {
         // float depth = LinearizeDepth(gl_FragCoord.z) / far; // divide by far for demonstration
         // FragColor = vec4(vec3(depth), 1.0);
 
-        vec3 lightPos = vec3(1.0f, 1.0f, 1.0f);
-        vec3 surfacePos = vec3(model * vec4(worldSpacePos, 1));
-        vec3 surface2Light = normalize(lightPos - surfacePos);
+        vec3 surface2Light = normalize(light.position - worldSpacePos);
         float diffuse = max(0.0f, dot(normal, surface2Light));
-        FragColor = diffuse * color;
+
+        if (mode < 0.5f)
+            FragColor = vec4(normal, 1.0f);
+        else if (mode > 0.5f)
+            FragColor = diffuse * color;
 	}
 }

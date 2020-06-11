@@ -183,8 +183,9 @@ public:
 		setFloat("materialShininess", shininess);
 	}
 
-	void setPointRenderSettings(float pointSize) {
+	void setPointRenderSettings(float pointSize, float renderMode) {
     	setFloat("pointSize", pointSize);
+		setFloat("mode", renderMode);
     }
 
 	void setColor(float r, float g, float b, float a) {

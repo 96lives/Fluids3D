@@ -9,8 +9,8 @@ uniform mat4 model;
 uniform float pointSize;
 
 void main() {
-	gl_Position = camera * model * vec4(position, 1.0);
-	worldSpacePos = position;
+	gl_Position = camera * model * vec4(position, 1.0f);
+	worldSpacePos = (model * vec4(position, 1.0f)).xyz;
 	// cameraSpacePos = gl_Position.xyz / gl_Position.w;
 	gl_PointSize = pointSize;
 }
