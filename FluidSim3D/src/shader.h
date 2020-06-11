@@ -192,6 +192,10 @@ public:
     	setVec4("color", color);
 	}
 
+	void setColor(glm::vec4 color){
+		setVec4("color", color);
+	}
+
 
 private:
     // utility function for checking shader compilation/linking errors.

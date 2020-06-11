@@ -17,8 +17,8 @@ FluidRenderer3D::FluidRenderer3D(SimUtil::Mat3Di *labels, int gridWidth, int gri
 	m_pointShader = new Shader{"./shaders/pointShader.vs", "./shaders/pointShader.fs"};
 	initGeom(labels, gridWidth, gridHeight, gridDepth, borderCount);
 
-	m_gLight.position = glm::vec3(2.0, 2.0, 2.0);
-	m_gLight.intensities = glm::vec3(1.0, 1.0, 1.0);
+	m_gLight.position = glm::vec3(1.0, 2.0, 2.0);
+	m_gLight.intensities = glm::vec3(0.1);
 	m_gLight.ambientCoefficient = 0.05f;
 	m_gLight.attenuation = 0.2f;
 	//initially pause the simulation
@@ -76,10 +76,13 @@ void FluidRenderer3D::draw(std::vector<glm::vec3> &particles, std::vector<glm::v
 		mesh.draw();
 	}
 	if (m_visualMode == 5) {
+		glEnable(GL_DEPTH_TEST);
 		m_pointShader->use();
 		m_pointShader->update(m_transform, m_camera);
-		m_pointShader->setColor(0.255f, 0.412f, 0.882f, 1.0f);
-		m_pointShader->setPointRenderSettings(5);
+		glm::vec3 colorCode = glm::vec3(0.0f, 191.0f, 255.0f) / 255.0f;
+		m_pointShader->setColor(glm::vec4(colorCode, 1.0f));
+		m_normalShader->setLight(m_gLight);
+		m_pointShader->setPointRenderSettings(20);
 		point.drawSphere();
 	}
 	
