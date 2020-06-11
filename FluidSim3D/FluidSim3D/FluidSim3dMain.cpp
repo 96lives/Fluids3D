@@ -43,6 +43,7 @@ int main(int argc, char** argv) {
 	while (!render.isClosed()) {
 		auto particleData = solver.particleData();
 		render.draw(particleData, data.vertices, data.normals, data.indices);
+
 		if (!render.isPaused() && newFrame) {
 			start = std::chrono::system_clock::now();
 			if (render.gManipulationActive()) {
@@ -52,6 +53,7 @@ int main(int argc, char** argv) {
 			data = solver.meshData();
 			newFrame = false;
 		}
+
 		if (render.isPaused() && render.forwardPressed()) {
 			if (render.gManipulationActive()) {
 				solver.updateOrientation(render.currentOrientation());
@@ -59,6 +61,7 @@ int main(int argc, char** argv) {
 			solver.step();
 			data = solver.meshData();
 		}
+
 		//Check if it's time for a new frame
 		if (!render.isPaused() && !newFrame) {
 			auto now = std::chrono::system_clock::now();

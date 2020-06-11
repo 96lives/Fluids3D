@@ -108,14 +108,15 @@ void FluidSolver3D::step() {
 }
 
 std::vector<glm::vec3> FluidSolver3D::particleData() {
-	std::vector<glm::vec3> particles;
-	particles.reserve(m_particles->size());
+	std::vector<glm::vec3> particles (m_particles->size());
+
+	#pragma omp parallel for
 	for (int i = 0; i < m_particles->size(); i++) {
 		float x = 2 * m_particles->at(i).pos.x / (m_maxGridSize * m_dx) - 1;
 		float y = 2 * m_particles->at(i).pos.y / (m_maxGridSize * m_dx) - 1;
 		float z = 2 * m_particles->at(i).pos.z / (m_maxGridSize * m_dx) - 1;
-		glm::vec3 p_i{ x,y,z };
-		particles.push_back(p_i);
+		glm::vec3 p_i{x, y, z};
+		particles[i] = p_i;
 	}
 	return particles;
 }
@@ -157,16 +158,20 @@ void FluidSolver3D::seedParticles(int particlesPerCell, std::vector<Particle3D> 
 						Vec3(cellCenter.x - 0.25f*m_dx, cellCenter.y - 0.25f*m_dx, cellCenter.z + 0.25f*m_dx) // bottom left
 					};
 					// cycle through subgrid to place all particles
-					for (int k = 0; k < particlesPerCell; k++) {
+					for (int particle = 0; particle < particlesPerCell; particle++) {
 						// randomly jitter from subgrid center
 						// give a random factor from [-0.24, 0.24] multiplied by dx
-						float jitterX = ((float)((rand() % 49) - 24) / 100.0f) * m_dx;
-						//jitterX = 0.0f; //DEBUG ALEX
-						float jitterY = ((float)((rand() % 49) - 24) / 100.0f) * m_dx;
-						//jitterY = 0.0f; //DEBUG ALEX
-						float jitterZ = ((float)((rand() % 49) - 24) / 100.0f) * m_dx;
-						//jitterZ = 0.0f; //DEBUG ALEX
-						Vec3 pos(subCenters[k % 8].x + jitterX, subCenters[k % 8].y + jitterY, subCenters[k % 8].z + jitterZ);
+						// float jitterX = ((float)((rand() % 49) - 24) / 100.0f) * m_dx;
+						// float jitterY = ((float)((rand() % 49) - 24) / 100.0f) * m_dx;
+						// float jitterZ = ((float)((rand() % 49) - 24) / 100.0f) * m_dx;
+						float jitterX = 0.0f; //DEBUG ALEX
+						float jitterY = 0.0f; //DEBUG ALEX
+						float jitterZ = 0.0f; //DEBUG ALEX
+						Vec3 pos(
+								subCenters[particle % 8].x + jitterX,
+								subCenters[particle % 8].y + jitterY,
+								subCenters[particle % 8].z + jitterZ
+								);
 						Vec3 vel(0.0f, 0.0f, 0.0f);
 						particleList->push_back(Particle3D(pos, vel));
 					}
