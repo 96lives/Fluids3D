@@ -161,12 +161,12 @@ void FluidSolver3D::seedParticles(int particlesPerCell, std::vector<Particle3D> 
 					for (int particle = 0; particle < particlesPerCell; particle++) {
 						// randomly jitter from subgrid center
 						// give a random factor from [-0.24, 0.24] multiplied by dx
-						// float jitterX = ((float)((rand() % 49) - 24) / 100.0f) * m_dx;
-						// float jitterY = ((float)((rand() % 49) - 24) / 100.0f) * m_dx;
-						// float jitterZ = ((float)((rand() % 49) - 24) / 100.0f) * m_dx;
-						float jitterX = 0.0f; //DEBUG ALEX
-						float jitterY = 0.0f; //DEBUG ALEX
-						float jitterZ = 0.0f; //DEBUG ALEX
+						float jitterX = ((float)((rand() % 49) - 24) / 100.0f) * m_dx;
+						float jitterY = ((float)((rand() % 49) - 24) / 100.0f) * m_dx;
+						float jitterZ = ((float)((rand() % 49) - 24) / 100.0f) * m_dx;
+						// float jitterX = 0.0f; //DEBUG ALEX
+						// float jitterY = 0.0f; //DEBUG ALEX
+						// float jitterZ = 0.0f; //DEBUG ALEX
 						Vec3 pos(
 								subCenters[particle % 8].x + jitterX,
 								subCenters[particle % 8].y + jitterY,
