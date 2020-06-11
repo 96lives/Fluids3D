@@ -75,13 +75,16 @@ void FluidRenderer3D::draw(std::vector<glm::vec3> &particles, std::vector<glm::v
 
 		mesh.draw();
 	}
-	if (m_visualMode == 5) {
+	if ((m_visualMode == 5) || (m_visualMode == 6)) {
 		glEnable(GL_DEPTH_TEST);
 		m_pointShader->use();
 		m_pointShader->update(m_transform, m_camera);
 		glm::vec3 colorCode = glm::vec3(0.0f, 191.0f, 255.0f) / 255.0f;
 		m_pointShader->setColor(glm::vec4(colorCode, 1.0f));
 		m_normalShader->setLight(m_gLight);
+
+		// if m_render mode is 0, render normal, if 1 render point
+		m_renderMode =  (m_visualMode == 6);
 		m_pointShader->setPointRenderSettings(20, m_renderMode);
 		point.drawSphere();
 	}

@@ -35,6 +35,9 @@ In the live-demo you're able to use the following input commands:
 | left   | - Rotation Y-Axis         |
 | up     | + Rotation X-Axis         |
 | down   | - Rotation X-Axis         |
+| 1      | - Render point            |
+| 5      | - Render normal           |
+| 6      | - Render points with volume |
 
 Furthermore you're able to do an arcball rotation with mouse dragging.
 

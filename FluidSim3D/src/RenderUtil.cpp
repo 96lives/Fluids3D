@@ -103,8 +103,13 @@ void Display::update(glm::vec3 &orientation, bool &pausePressed, bool &forwardPr
 				visualMode = 4;
 				break;
 			case SDLK_5:
+			    // render normal
 				visualMode = 5;
 				break;
+            case SDLK_6:
+                // render balls
+                visualMode = 6;
+                break;
 			case SDLK_s:
 				//move screen up
 				m_transform->SetPos(m_transform->GetPos() + glm::vec3(0, steps, 0));
