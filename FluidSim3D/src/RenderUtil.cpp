@@ -105,19 +105,19 @@ void Display::update(glm::vec3 &orientation, bool &pausePressed, bool &forwardPr
 			case SDLK_5:
 				visualMode = 5;
 				break;
-			case SDLK_w:
+			case SDLK_s:
 				//move screen up
 				m_transform->SetPos(m_transform->GetPos() + glm::vec3(0, steps, 0));
 				break;
-			case SDLK_s:
+			case SDLK_w:
 				//move screen down
 				m_transform->SetPos(m_transform->GetPos() - glm::vec3(0, steps, 0));
 				break;
-			case SDLK_d:
+			case SDLK_a:
 				//move screen right
 				m_transform->SetPos(m_transform->GetPos() - glm::vec3(steps, 0, 0));
 				break;
-			case SDLK_a:
+			case SDLK_d:
 				//move screen left
 				m_transform->SetPos(m_transform->GetPos() + glm::vec3(steps, 0, 0));
 				break;
