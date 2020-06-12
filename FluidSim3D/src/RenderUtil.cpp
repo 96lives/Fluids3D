@@ -424,6 +424,7 @@ void Point::draw() {
 void Point::drawSphere() {
 	glBindVertexArray(m_vertexArrayObject);
 	// glPointSize(10.0f);
+	glEnable(GL_BLEND);
 	glEnable(GL_POINT_SPRITE);
 	glEnable(GL_PROGRAM_POINT_SIZE);
 	glDrawArrays(GL_POINTS, 0, m_pointsCount);
