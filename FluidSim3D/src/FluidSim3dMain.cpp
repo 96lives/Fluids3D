@@ -37,12 +37,11 @@ int main(int argc, char** argv) {
 	solver.getDim(w, h, d, b);
 	FluidRenderer3D render( solver.getGeometry(), w, h, d, b );
 	solver.step();
-	SimUtil::Mesh3D data = solver.meshData();
 	auto start = std::chrono::system_clock::now();
 	bool newFrame = true;
 	while (!render.isClosed()) {
 		auto particleData = solver.particleData();
-		render.draw(particleData, data.vertices, data.normals, data.indices);
+		render.draw(particleData);
 
 		if (!render.isPaused() && newFrame) {
 			start = std::chrono::system_clock::now();
@@ -50,7 +49,6 @@ int main(int argc, char** argv) {
 				solver.updateOrientation(render.currentOrientation());
 			}
 			solver.step();
-			data = solver.meshData();
 			newFrame = false;
 		}
 
@@ -59,7 +57,6 @@ int main(int argc, char** argv) {
 				solver.updateOrientation(render.currentOrientation());
 			}
 			solver.step();
-			data = solver.meshData();
 		}
 
 		//Check if it's time for a new frame

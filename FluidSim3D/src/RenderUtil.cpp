@@ -110,6 +110,10 @@ void Display::update(glm::vec3 &orientation, bool &pausePressed, bool &forwardPr
                 // render balls
                 visualMode = 6;
                 break;
+		   case SDLK_7:
+                // render balls
+                visualMode = 7;
+                break;
 			case SDLK_s:
 				//move screen up
 				m_transform->SetPos(m_transform->GetPos() + glm::vec3(0, steps, 0));
@@ -421,10 +425,15 @@ void Point::draw() {
 	glBindVertexArray(0);
 }
 
-void Point::drawSphere() {
+void Point::drawSphere(bool blend) {
 	glBindVertexArray(m_vertexArrayObject);
 	// glPointSize(10.0f);
-	glEnable(GL_BLEND);
+	if (blend) {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	} else {
+		glDisable(GL_BLEND);
+	}
 	glEnable(GL_POINT_SPRITE);
 	glEnable(GL_PROGRAM_POINT_SIZE);
 	glDrawArrays(GL_POINTS, 0, m_pointsCount);

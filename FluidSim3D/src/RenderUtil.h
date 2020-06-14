@@ -148,7 +148,7 @@ public:
 	Point(std::vector<glm::vec3> points);
 
 	void draw();
-	void drawSphere();
+	void drawSphere(bool blend);
 
 	~Point();
 private:

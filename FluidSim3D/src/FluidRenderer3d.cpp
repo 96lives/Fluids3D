@@ -35,7 +35,8 @@ FluidRenderer3D::~FluidRenderer3D() {
 // Public Functions
 //----------------------------------------------------------------------
 
-void FluidRenderer3D::draw(std::vector<glm::vec3> &particles, std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, std::vector<int> &indicies) {
+// void FluidRenderer3D::draw(std::vector<glm::vec3> &particles, std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, std::vector<int> &indicies) {
+void FluidRenderer3D::draw(std::vector<glm::vec3> &particles) {
 	// m_display->clear(0.686f, 0.933f, 0.933f, 1.0f);
 	m_display->clear(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -45,7 +46,7 @@ void FluidRenderer3D::draw(std::vector<glm::vec3> &particles, std::vector<glm::v
 
 	m_borderSolid->draw();
 
-	Mesh mesh{ vertices, normals, indicies };
+	// Mesh mesh{ vertices, normals, indicies };
 	Point point{ particles };
 
 	if (m_visualMode == 1) {
@@ -54,11 +55,8 @@ void FluidRenderer3D::draw(std::vector<glm::vec3> &particles, std::vector<glm::v
 	}
 	else if (m_visualMode == 2) {
 		m_colorShader->setColor(0.255f, 0.412f, 0.882f, 1.0f);
-		mesh.draw();
 	}
 	else if (m_visualMode == 3) {
-		m_colorShader->setColor(0.255f, 0.412f, 0.882f, 0.8f);
-		mesh.draw();
 		glDisable(GL_DEPTH_TEST);
 		m_colorShader->setColor(0.690f, 0.878f, 0.902f, 0.2f);
 		point.draw();
@@ -71,10 +69,8 @@ void FluidRenderer3D::draw(std::vector<glm::vec3> &particles, std::vector<glm::v
 		// m_normalShader->setColor(0.255f, 0.412f, 0.882f, 1.0f);
 		m_normalShader->setMaterialSettings(80.0f, glm::vec3{ 1.0f, 1.0f, 1.0f });
 		m_normalShader->setLight(m_gLight);
-
-		mesh.draw();
 	}
-	if ((m_visualMode == 5) || (m_visualMode == 6)) {
+	if ((m_visualMode == 5) || (m_visualMode == 6) || (m_visualMode == 7)) {
 		glEnable(GL_DEPTH_TEST);
 		m_pointShader->use();
 		m_pointShader->update(m_transform, m_camera);
@@ -83,9 +79,9 @@ void FluidRenderer3D::draw(std::vector<glm::vec3> &particles, std::vector<glm::v
 		m_normalShader->setLight(m_gLight);
 
 		// if m_render mode is 0, render normal, if 1 render point
-		m_renderMode =  (m_visualMode == 6);
+		m_renderMode =  (m_visualMode == 6) || (m_visualMode == 7);
 		m_pointShader->setPointRenderSettings(10, m_renderMode);
-		point.drawSphere();
+		point.drawSphere(m_visualMode == 7);
 	}
 	
 

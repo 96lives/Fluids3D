@@ -29,8 +29,9 @@ public:
 	normals - normals of the triangle mesh
 	indicies - indicies of the vertices for the triangulation
 	*/
-	void draw(std::vector<glm::vec3> &particles, std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, std::vector<int> &indicies);
-	
+	// void draw(std::vector<glm::vec3> &particles, std::vector<glm::vec3> &vertices, std::vector<glm::vec3> &normals, std::vector<int> &indicies);
+	void draw(std::vector<glm::vec3> &particles);
+
 	/*getters self-explaining*/
 	bool isClosed() { return m_display->isClosed(); };
 	bool isPaused() { return m_isPaused; };
