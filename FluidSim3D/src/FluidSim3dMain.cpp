@@ -24,7 +24,7 @@ const float TIME_STEP = 0.01f;
 //----------------------------------------------------------------------
 
 // file format for initial geometry
-const std::string INITIAL_GEOMETRY_FILE_IN = "geo_big.txt";
+const std::string INITIAL_GEOMETRY_FILE_IN = "geo_vertical.txt";
 
 //----------------------------------------------------------------------
 // Main Function

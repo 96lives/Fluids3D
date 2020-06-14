@@ -2,7 +2,7 @@
 
 
 #define WIDTH 1600
-#define HEIGHT 1200
+#define HEIGHT 1600
 
 //----------------------------------------------------------------------
 // Constructor
