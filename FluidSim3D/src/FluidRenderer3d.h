@@ -78,6 +78,7 @@ private:
 	*/
 	float m_renderMode;
 	int m_visualMode;
+	int m_drawLine;
 	//stores the current orientation
 	glm::vec3 m_orientation;
 

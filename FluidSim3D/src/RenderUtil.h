@@ -61,7 +61,14 @@ class Display
 public:
 	Display(int width, int height, const std::string& title, Transform* transform);
 
-	void update(glm::vec3 &orientation, bool &pausePressed, bool &forwardPressed, int &visualMode, bool &manipulation);
+	void update(
+			glm::vec3 &orientation,
+			bool &pausePressed,
+			bool &forwardPressed,
+			int &visualMode,
+			bool &manipulation,
+			int &drawLine
+			);
 	void clear(float r, float g, float b, float a);
 	bool isClosed();
 

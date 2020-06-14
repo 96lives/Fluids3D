@@ -1,8 +1,8 @@
 #include "FluidRenderer3d.h"
 
 
-#define WIDTH 800
-#define HEIGHT 600
+#define WIDTH 1600
+#define HEIGHT 1200
 
 //----------------------------------------------------------------------
 // Constructor
@@ -26,6 +26,7 @@ FluidRenderer3D::FluidRenderer3D(SimUtil::Mat3Di *labels, int gridWidth, int gri
 	m_gManipulation = true;
 	m_orientation = glm::vec3(0.0f, -1.0f, 0.0f);
 	m_visualMode = 1;
+	m_drawLine = true;
 }
 
 FluidRenderer3D::~FluidRenderer3D() {
@@ -44,7 +45,8 @@ void FluidRenderer3D::draw(std::vector<glm::vec3> &particles) {
 	m_colorShader->update(m_transform, m_camera);
 	m_colorShader->setColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-	m_borderSolid->draw();
+	if (m_drawLine)
+		m_borderSolid->draw();
 
 	// Mesh mesh{ vertices, normals, indicies };
 	Point point{ particles };
@@ -75,7 +77,7 @@ void FluidRenderer3D::draw(std::vector<glm::vec3> &particles) {
 		m_pointShader->use();
 		m_pointShader->update(m_transform, m_camera);
 		glm::vec3 colorCode = glm::vec3(0.0f, 191.0f, 255.0f) / 255.0f;
-		m_pointShader->setColor(glm::vec4(colorCode, 0.2f));
+		m_pointShader->setColor(glm::vec4(colorCode, 0.4f));
 		m_normalShader->setLight(m_gLight);
 
 		// if m_render mode is 0, render normal, if 1 render point
@@ -89,7 +91,7 @@ void FluidRenderer3D::draw(std::vector<glm::vec3> &particles) {
 
 	// m_meshSolid->draw();
 
-	m_display->update(m_orientation, m_isPaused, m_forwardPressed, m_visualMode, m_gManipulation);
+	m_display->update(m_orientation, m_isPaused, m_forwardPressed, m_visualMode, m_gManipulation, m_drawLine);
 }
 
 void FluidRenderer3D::capturePicture(std::string name) {

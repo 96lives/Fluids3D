@@ -72,7 +72,14 @@ bool Display::isClosed() {
 /*
 Updates the window
 */
-void Display::update(glm::vec3 &orientation, bool &pausePressed, bool &forwardPressed, int &visualMode, bool &manipulation) {
+void Display::update(
+		glm::vec3 &orientation,
+		bool &pausePressed,
+		bool &forwardPressed,
+		int &visualMode,
+		bool &manipulation,
+		int &drawLine
+		) {
 	SDL_GL_SwapWindow(m_window);
 	SDL_Event e;
 	int handled;
@@ -113,6 +120,10 @@ void Display::update(glm::vec3 &orientation, bool &pausePressed, bool &forwardPr
 		   case SDLK_7:
                 // render balls
                 visualMode = 7;
+                break;
+            case SDLK_p:
+                // render balls
+                drawLine = !drawLine;
                 break;
 			case SDLK_s:
 				//move screen up
