@@ -8,8 +8,7 @@
 // Constructor
 //----------------------------------------------------------------------
 
-FluidRenderer3D::FluidRenderer3D(SimUtil::Mat3Di *labels, int gridWidth, int gridHeight, int gridDepth, int borderCount) {
-	m_transform = new Transform();
+FluidRenderer3D::FluidRenderer3D(SimUtil::Mat3Di *labels, int gridWidth, int gridHeight, int gridDepth, int borderCount) { m_transform = new Transform();
 	m_display = new Display{ WIDTH, HEIGHT, "3D Fluid Simulation", m_transform };
 	m_camera = new Camera(glm::vec3(0, 0, -4), 70.0f, (float)WIDTH / (float)HEIGHT, 0.01f, 1000.0f);
 	m_colorShader = new Shader{"./shaders/basicShader.vs", "./shaders/basicShader.fs"};
@@ -92,7 +91,7 @@ void FluidRenderer3D::draw(std::vector<glm::vec3> &particles, std::vector<glm::v
 
 	m_colorShader->setColor(0.392f, 0.584f, 0.929f, 0.1f);
 
-	m_meshSolid->draw();
+	// m_meshSolid->draw();
 
 	m_display->update(m_orientation, m_isPaused, m_forwardPressed, m_visualMode, m_gManipulation);
 }
@@ -320,7 +319,7 @@ void FluidRenderer3D::initGeom(SimUtil::Mat3Di *label, int x, int y, int z, int 
 	}
 
 	initBorderLines(x, y, z, borderCount, maxGridSize);
-	m_meshSolid = new Mesh{ vertSolid , normalsSolid, indSolid };
+	// m_meshSolid = new Mesh{ vertSolid , normalsSolid, indSolid };
 }
 
 /*

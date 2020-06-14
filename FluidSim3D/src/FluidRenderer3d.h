@@ -59,7 +59,7 @@ private:
 	//shader used for rendering points
 	Shader *m_pointShader;
 	//Mesh with the geometry of the solids
-	Mesh *m_meshSolid;
+	// Mesh *m_meshSolid;
 	//Line for the edges of the solids
 	Line *m_borderSolid;
 	//Global Light
