@@ -1,0 +1,3 @@
+/home/ds/projects/fluid-sim-3d/FluidSim3D/src/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/ds/projects/fluid-sim-3d/FluidSim3D/src/cmake-build-debug/CMakeFiles/main.dir
+/home/ds/projects/fluid-sim-3d/FluidSim3D/src/cmake-build-debug/CMakeFiles/edit_cache.dir
